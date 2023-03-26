@@ -1,0 +1,15 @@
+{
+  "name": "nukeline",
+  "version": "1.0.0",
+  "description": "A sample app in expressJS to engage github actions",
+  "main": "index.js",
+  "scripts": {
+    "app":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
