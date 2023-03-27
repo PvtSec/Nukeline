@@ -1,0 +1,33 @@
+name: Build and Push to AWS-ECS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push_to_ecs:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ap-south-1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
+      - name: Build and tag the Docker image
+        id: build-image
+        run: |
+          docker build -t nukeline .
+          docker tag nukeline:latest 167261036202.dkr.ecr.ap-south-1.amazonaws.com/nukeline:latest
+          docker push 167261036202.dkr.ecr.ap-south-1.amazonaws.com/nukeline:latest
