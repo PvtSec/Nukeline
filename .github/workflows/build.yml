@@ -29,4 +29,11 @@ jobs:
           docker build -t nukeline .
           docker tag nukeline:latest 167261036202.dkr.ecr.ap-south-1.amazonaws.com/nukeline:latest
           docker push 167261036202.dkr.ecr.ap-south-1.amazonaws.com/nukeline:latest
-          
+      
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: nuke-task.json
+          service: nuke-service
+          cluster: nuke-cluster
+          wait-for-service-stability: true
