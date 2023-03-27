@@ -56,5 +56,4 @@ jobs:
           aws ecs update-service \
             --cluster "nuke-cluster" \
             --service "nuke-service" \
-            --task-definition arn:aws:ecs:ap-south-1:167261036202:task-definition/nuke-task:4
-            
+            --task-definition arn:aws:ecs:ap-south-1:167261036202:task-definition/nuke-task:5
