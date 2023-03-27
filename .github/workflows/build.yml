@@ -49,11 +49,9 @@ jobs:
               --query 'imageDetails[0].imageTags[0]' \
               --output text)
           done
-
-      - name: Update ECS service
-        id: update-service
+      
+      - name: Run ECS task
         run: |
-          aws ecs update-service \
-            --cluster "nuke-cluster" \
-            --service "nuke-service" \
-            --task-definition arn:aws:ecs:ap-south-1:167261036202:task-definition/nuke-task:3
+          aws ecs run-task \
+            --cluster nuke-cluster \
+            --task-definition nuke-task \
