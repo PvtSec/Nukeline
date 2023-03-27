@@ -29,6 +29,30 @@ jobs:
           docker build -t nukeline .
           docker tag nukeline:latest 167261036202.dkr.ecr.ap-south-1.amazonaws.com/nukeline:latest
           docker push 167261036202.dkr.ecr.ap-south-1.amazonaws.com/nukeline:latest
+
+      - name: Wait for ECR image
+        id: wait-for-image
+        run: |
+          IMAGE_AVAILABLE=$(aws ecr describe-images \
+            --repository-name nukeline \
+            --image-ids imageTag=latest \
+            --query 'imageDetails[0].imageTags[0]' \
+            --output text)
+
+          while [ "$IMAGE_AVAILABLE" != "latest" ]
+          do
+            echo "Waiting for latest image in ECR..."
+            sleep 30
+            IMAGE_AVAILABLE=$(aws ecr describe-images \
+              --repository-name nukeline \
+              --image-ids imageTag=latest \
+              --query 'imageDetails[0].imageTags[0]' \
+              --output text)
+          done
+
+      - name: Update ECS service
+        id: update-service
+        run: |
           aws ecs update-service \
             --cluster "nuke-cluster" \
             --service "nuke-service" \
