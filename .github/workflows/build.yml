@@ -54,4 +54,4 @@ jobs:
         run: |
           aws ecs run-task \
             --cluster nuke-cluster \
-            --task-definition nuke-task \
+            --task-definition nuke-task
